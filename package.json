@@ -1,0 +1,36 @@
+{
+  "name": "@mbanq/api",
+  "version": "0.0.1",
+  "description": "Mbanq API library for browser and node",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "keywords": [
+    "auth",
+    "browser",
+    "frontend",
+    "hackathon"
+  ],
+  "author": {
+    "name": "FinLink, Inc.",
+    "email": "dev@mbanq.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mbanq/api.git"
+  },
+  "homepage": "https://github.com/mbanq/api",
+  "bugs": {
+    "url": "https://github.com/mbanq/api"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^13.0.1",
+    "jest": "^24.8.0",
+    "standard": "^13.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  }
+}
