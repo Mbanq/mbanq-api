@@ -42,7 +42,10 @@ Mbanq.prototype.auth = async function (credentials) {
   const auth = axios.create({
     baseURL: this.authURL,
     timeout: 4000,
-    headers: Object.assign({ 'Content-Type': 'application/x-www-form-urlencoded' }, this.headers),
+    headers: {
+      tenantId: this.tenantId,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     transformRequest: data => {
       return transformRequest(data)
     }
