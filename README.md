@@ -54,4 +54,74 @@ Client.auth({ username: 'web1', password: 'password' })
 After the successful `Client.auth()` call, you should have the API tokens in the `localStorage` of your browser and you can start calling the API.
 
 # Calling the API
+The `mbanq-api-client` offers you an easy way of making calls to Mbanq API. It
+offers a very limited set of functionality and is only intended to be used for
+small MVPs.
 
+Once you created the `Mbanq APi Client` with the use of your `tenantId`,
+`clientId` and `clientSecret` and authenticated yourself by running
+`Client.auth(credentials)` you can start making calls to the api:
+
+```js
+const api = Client.api()
+
+// if you wanna do it right
+// you should use a `try` and `catch` block
+
+const yourFunction = async () => {
+  try {
+    const user = await api.user()
+    const clients = await api.clients()
+    const firstClientsAccounts = await api.accounts(clients.pageItems[0].id)
+  } catch (error) {
+    return error
+  }
+}
+```
+
+Since every transfer has to be confirmed with an OTP (one time password), creating a `transfer` is a multi step process. First you have to create a transfer draft and then you have to submit your draft's `resourceId` together with an OTP.
+
+```js
+const recipient = {
+  fullName: 'Bart Simpson',
+  from: {
+    accountNumber: '000000011'
+  },
+  to: {
+    sortCode: '12345678',
+    accountNumber: '000000012'
+  },
+  currency: 'USD',
+  subject: 'Keep up the good work, Bart',
+  amount: 666.66
+}
+
+const createTransferDraft = async (recipient) => {
+  try {
+    return await api.transfer(recipient)
+  } catch (error) {
+    return error
+  }
+}
+```
+
+After the draft of the transfer has been created, you should receive:
+- a `resource_id` in the response and
+- an OTP delivered to your email address
+
+After it you can submit the transfer:
+
+```js
+const transfer = {
+  id: 123455, // resource_id you received when creating the draft
+  otp: 12345 // OTP that's been delivered to your email address
+}
+
+const submitTransfer = async (transfer) => {
+  try {
+    return api.confirmTransfer(transfer)
+  } catch (error) {
+    return error
+  }
+}
+```

@@ -1,7 +1,7 @@
 {
   "name": "@mbanq/api",
   "version": "0.0.1",
-  "description": "Mbanq API library for browser and node",
+  "description": "Mbanq API library for frontend applications",
   "main": "src/index.js",
   "scripts": {
     "test": "jest --coverage"

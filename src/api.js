@@ -122,6 +122,27 @@ Mbanq.prototype.api = function () {
       } catch (error) {
         return error
       }
+    },
+    confirmTransfer: async (transfer) => {
+      const { id, otp } = transfer
+      console.log(gql.headers)
+      const headers = {
+        'OTP-Token': otp || ''
+      }
+      return gqlReq({
+        method: gql.method,
+        baseURL: gql.baseURL,
+        data: {
+          query: `
+            mutation {
+              submitTransfer (transferId:${Number(id)}){
+                resourceId
+              }
+            }
+          `
+        },
+        headers
+      })
     }
   }
 }
