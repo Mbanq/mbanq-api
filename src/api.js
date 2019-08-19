@@ -125,7 +125,6 @@ Mbanq.prototype.api = function () {
     },
     confirmTransfer: async (transfer) => {
       const { id, otp } = transfer
-      console.log(gql.headers)
       const headers = {
         'OTP-Token': otp || ''
       }
