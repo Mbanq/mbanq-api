@@ -79,6 +79,7 @@ const yourFunction = async () => {
 }
 ```
 
+## Creating a transfer
 Since every transfer has to be confirmed with an OTP (one time password), creating a `transfer` is a multi step process. First you have to create a transfer draft and then you have to submit your draft's `resourceId` together with an OTP.
 
 ```js
