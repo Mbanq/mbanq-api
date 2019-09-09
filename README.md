@@ -1,8 +1,8 @@
-# Mbanq API Client for Web Applications
-Intended to be used to handle authentication and calls to the Mbanq API.
+# mbanq-api-client
+Intended to be used to handle authentication and calls to the Mbanq API in `js` based frontend applications.
 
 This API client is used in the
-[mbanq-hackathon-template](https://github.com/Mbanq/mbanq-hackathon-template)
+<a href="https://github.com/Mbanq/mbanq-hackathon-template" target="_blank">mbanq-hackathon-template</a>
 
 
 > This package was created for the hackathon and is not intended to be used in
@@ -34,10 +34,10 @@ const Client = new Mbanq({
 ```
 
 - `baseURL`: default setting points to Mbanq's evaluation evironment
-  https://api.cloud.mbanq.com. If you work with the evaluation environment you
+  `https://api.cloud.mbanq.com`. If you work with the evaluation environment you
 don't have to do anything
 - `tenantId`: Tenant identifier of your core banking instance that you created
-  in the `console` application e.g. https://console.cloud.mbanq.com
+  in the `console` application e.g. <a href="https://console.cloud.mbanq.com" target="_blank">Mbanq Cloud Console</a>
 - `clientId`: Client identifier of the App you created for the API use
 - `clientSecret`: Client secret of the App you created for the API use
 
@@ -126,3 +126,8 @@ const submitTransfer = async (transfer) => {
   }
 }
 ```
+
+# Report a problem
+Whenever you experience a problem with this template or the <a href="https://github.com/Mbanq/mbanq-api-client" target="_blank">mbanq-api-client</a>
+
+<a href="https://github.com/Mbanq/mbanq-api-client/issues/new" target="_blank">Create an Issue</a>
