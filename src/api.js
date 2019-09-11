@@ -18,7 +18,7 @@ const request = (config) => {
       return response.data
     },
     error => {
-      throw Error(`Booo! Here is what happened: ${error.message}`)
+      throw Error(`Booo! Here is what happened: ${error}`)
     }
   )
 
@@ -28,12 +28,6 @@ const request = (config) => {
 Mbanq.prototype.api = function () {
   // for all the REST API requests
   const req = request(this)
-  // for the GraphQL requests
-  const gql = Object.assign(this, {
-    baseURL: `${this.baseURL}/graphql`,
-    method: 'post'
-  })
-  const gqlReq = request(gql)
   return {
     user: async function () {
       try {
@@ -89,59 +83,51 @@ Mbanq.prototype.api = function () {
      *   amount: Number
      * }
      */
-    transfer: async (recipient) => {
+    transferTemplates: async () => {
       try {
-        if (!recipient) {
-          throw Error(`Please provide recipient details: name, sortCode, accountNumber and amount`)
-        }
-        return await gqlReq({
-          method: gql.method,
-          baseURL: gql.baseURL,
-          data: {
-            query: `
-              mutation {
-                createTransfer(transferInput: {
-                  type: "CREDIT"
-                  currency: "${recipient.currency}"
-                  amount: ${recipient.amount}
-                  dateFormat: "YYYY-MM-DD"
-                  reference: ${JSON.stringify(recipient.subject)}
-                  debtor: {
-                    identifier: "ACCOUNT:${recipient.from.accountNumber}"
-                  }
-                  creditor: {
-                    identifier: "SWIFT://${recipient.to.sortCode}/${recipient.to.accountNumber}"
-                    name: "${recipient.fullName}"
-                }
-                }
-                ) {resourceId}
-              }
-            `
-          }
+        return await req({
+          method: 'get',
+          url: `/accounttransfers/template?type=tpt`
         })
       } catch (error) {
         return error
       }
     },
-    confirmTransfer: async (transfer) => {
-      const { id, otp } = transfer
-      const headers = {
-        'OTP-Token': otp || ''
+    createTransfer: async (transfer) => {
+      try {
+      //  const data = {
+      //    fromOfficeId: 1,
+      //    fromClientId: 11,
+      //    fromAccountType: 2,
+      //    fromAccountId: 11,
+      //    toOfficeId: 1,
+      //    toClientId: 12,
+      //    toAccountType: 2,
+      //    toAccountId: 12,
+      //    dateFormat: 'dd MMMM yyyy',
+      //    locale: 'en',
+      //    transferDate: '4 September 2019',
+      //    transferAmount: transfer.amount || '1.00',
+      //    transferDescription: transfer.subject
+      //  }
+        return await req({
+          method: 'post',
+          url: `/accounttransfers?type=tpt`,
+          data: transfer
+        })
+      } catch (error) {
+        return error
       }
-      return gqlReq({
-        method: gql.method,
-        baseURL: gql.baseURL,
-        data: {
-          query: `
-            mutation {
-              submitTransfer (transferId:${Number(id)}){
-                resourceId
-              }
-            }
-          `
-        },
-        headers
-      })
+    },
+    transactions: async (clientId) => {
+      try {
+        return await req({
+          method: 'get',
+          url: `/savingsaccounts/${clientId}?associations=transactions`
+        })
+      } catch (error) {
+        return error
+      }
     }
   }
 }
