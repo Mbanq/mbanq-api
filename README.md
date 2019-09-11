@@ -79,6 +79,22 @@ const yourFunction = async () => {
 }
 ```
 
+## Supported API Calls
+Since the `mbanq-api-client` was created just for the hackathon, it has
+a relatively limited functionality.
+
+Following API calls are currently supported:
+- `user()` - to get the user details
+- `clients(id)` - to get all `clients` of a `user` or a `client` with
+  a particular `id`
+- `accounts(clientId)` - to get all the `accounts` of a certain `client`
+- `transferTemplates()` - to get the accounts a `transfer` can be created
+  `from` and `to`
+- `createTransfer(transfer)` - to create a 3rd party transfer (to another
+  client of the same bank)
+- `transactions(clientId)` - to get the savings account transactions for
+  a certain client
+
 ## Creating a transfer
 Before you create a transfer you can check which accounts you can send money to, by calling `api.transferTemplates()`.
 
@@ -99,7 +115,7 @@ Once you know the accounts that are eligible for money transfers you can call `a
     transferAmount: '1.00',
     transferDescription: 'Subject of the transfer'
   }
-  
+
   const sendMoney = async (transfer) => {
   try {
     return await api.createTransfer(transfer)
