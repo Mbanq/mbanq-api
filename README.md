@@ -14,7 +14,7 @@ Mbanq API client is very use to use.
 Firs you have to add it to your application:
 
 ```bash
-npm i -S Mbanq/mbanq-api
+npm i -S Mbanq/mbanq-api-client
 ```
 
 Before you can make calls to the self-service API, you have to initialize a new
@@ -80,47 +80,29 @@ const yourFunction = async () => {
 ```
 
 ## Creating a transfer
-Since every transfer has to be confirmed with an OTP (one time password), creating a `transfer` is a multi step process. First you have to create a transfer draft and then you have to submit your draft's `resourceId` together with an OTP.
+Before you create a transfer you can check which accounts you can send money to, by calling `api.transferTemplates()`.
 
+Once you know the accounts that are eligible for money transfers you can call `api.createTransfer(transfer)` where transfer object has to have the following data:
 ```js
-const recipient = {
-  fullName: 'Bart Simpson',
-  from: {
-    accountNumber: '000000011'
-  },
-  to: {
-    sortCode: '12345678',
-    accountNumber: '000000012'
-  },
-  currency: 'USD',
-  subject: 'Keep up the good work, Bart',
-  amount: 666.66
-}
-
-const createTransferDraft = async (recipient) => {
-  try {
-    return await api.transfer(recipient)
-  } catch (error) {
-    return error
+  const transfer = {
+    fromOfficeId: 1,
+    fromClientId: 11,
+    fromAccountType: 2,
+    fromAccountId: 11,
+    toOfficeId: 1,
+    toClientId: 12,
+    toAccountType: 2,
+    toAccountId: 12,
+    dateFormat: 'dd MMMM yyyy',
+    locale: 'en',
+    transferDate: '4 September 2019',
+    transferAmount: '1.00',
+    transferDescription: 'Subject of the transfer'
   }
-}
-```
-
-After the draft of the transfer has been created, you should receive:
-- a `resource_id` in the response and
-- an OTP delivered to your email address
-
-After it you can submit the transfer:
-
-```js
-const transfer = {
-  id: 123455, // resource_id you received when creating the draft
-  otp: 12345 // OTP that's been delivered to your email address
-}
-
-const submitTransfer = async (transfer) => {
+  
+  const sendMoney = async (transfer) => {
   try {
-    return api.confirmTransfer(transfer)
+    return await api.createTransfer(transfer)
   } catch (error) {
     return error
   }
